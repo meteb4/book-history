@@ -22,7 +22,6 @@ class Database {
       `INSERT INTO books (title, author) VALUES ("${title}","${author}")`,
       (err, res) => {
         if (err) throw err;
-        console.log(res);
       }
     );
   }
@@ -30,19 +29,21 @@ class Database {
   delete(id) {
     this.database.query(`DELETE FROM books WHERE id = ${id}`, (err, res) => {
       if (err) throw err;
-      console.log(res);
     });
   }
+
   get show() {
-    this.database.query(`SELECT * FROM books`, (err, res) => {
+    return this.database.query(`SELECT * FROM books`, (err, res, fields) => {
       if (err) throw err;
-      console.log(JSON.parse(JSON.stringify(res)));
+      // console.log("elements are : ", res[0]);
+      return "JSON.stringify(res)";
+      // return JSON.parse(JSON.stringify(res));
     });
   }
 }
 
-// let i = new Database("localhost", "root", "", "book");
-// i.connect;
-// i.show;
+let i = new Database("localhost", "root", "", "book");
+i.connect;
+console.log(i.show);
 
 module.exports = Database;

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Registre de livres</h1>
+    <h4>Disponibilité de livres dans notre réserve</h4>
+    <div id="container">
+      <div id="header">
+        <span>Titre</span>
+        <span>Auteur</span>
+        <span>Date</span>
+        <span>Disponibilité</span>
+      </div>
+    </div>
+    <script>
+      function getBooks() {
+        fetch("http://localhost:3000/books")
+          .then((skim) => {
+            return skim.json();
+          })
+          .then((parsed) => {
+            builder(parsed);
+          });
+      }
+      function builder(books) {
+        let container = document.createElement("div");
+        container.classList.add("book");
+        books.map((book) => {
+          let span = document.createElement("span");
+          for (let i = 0; i < Object.keys(book).length; i++) {
+            switch (i) {
+              case 0:
+                span.innerHTML = document.createTextNode(book.title);
+                container.appendChild(span);
+                break;
+              case 1:
+                span.innerHTML = document.createTextNode(book.author);
+                container.appendChild(span);
+                break;
+              case 2:
+                span.innerHTML = document.createTextNode(book.id);
+                container.appendChild(span);
+                break;
+              default:
+                break;
+            }
+          }
+        });
+      }
+      window.addEventListener("load", (e) => {
+        getBooks();
+      });
+    </script>
+  </body>
+</html>
