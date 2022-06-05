@@ -33,6 +33,16 @@ class Database {
       console.log(res);
     });
   }
+  get show() {
+    this.database.query(`SELECT * FROM books`, (err, res) => {
+      if (err) throw err;
+      console.log(JSON.parse(JSON.stringify(res)));
+    });
+  }
 }
+
+// let i = new Database("localhost", "root", "", "book");
+// i.connect;
+// i.show;
 
 module.exports = Database;
