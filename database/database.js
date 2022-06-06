@@ -32,18 +32,16 @@ class Database {
     });
   }
 
-  get show() {
-    return this.database.query(`SELECT * FROM books`, (err, res, fields) => {
-      if (err) throw err;
-      // console.log("elements are : ", res[0]);
-      return "JSON.stringify(res)";
-      // return JSON.parse(JSON.stringify(res));
+  show() {
+    return new Promise((resolve, reject) => {
+      this.database.query("SELECT * FROM books", (err, res, fields) => {
+        if (err) reject(err);
+        resolve(res);
+      });
     });
   }
 }
 
 let i = new Database("localhost", "root", "", "book");
-i.connect;
-console.log(i.show);
-
+i.show().then((e) => console.log(e));
 module.exports = Database;

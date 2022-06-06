@@ -14,13 +14,12 @@ app.use((req, res, next) => {
 });
 
 DATABASE.connect;
-DATABASE.add("Capital de la Douleur", "Baudelaire");
-let i = DATABASE.show;
-console.log(i);
 app.get("/", (req, res) => {
   res.send(DATABASE.show);
 });
 
-app.get("/books", (req, res) => {});
+app.get("/books", (req, res) => {
+  DATABASE.show().then((e) => console.log(e));
+});
 
 app.listen(3000);
