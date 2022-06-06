@@ -18,8 +18,9 @@ app.get("/", (req, res) => {
   res.send(DATABASE.show);
 });
 
-app.get("/books", (req, res) => {
-  DATABASE.show().then((e) => console.log(e));
+app.get("/books", async (req, res) => {
+  const books = await DATABASE.show.then((e) => e);
+  res.send(books);
 });
 
 app.listen(3000);

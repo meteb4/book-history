@@ -36,12 +36,17 @@ class Database {
     return new Promise((resolve, reject) => {
       this.database.query("SELECT * FROM books", (err, res, fields) => {
         if (err) reject(err);
-        resolve(res);
+        let arr = [];
+        for (let i = 0; i < Object.keys(res).length; i++) {
+          arr.push(JSON.parse(JSON.stringify(res[i])));
+        }
+        resolve(arr);
       });
     });
   }
 }
 
 let i = new Database("localhost", "root", "", "book");
-i.show().then((e) => console.log(e));
+// i.add("Fables", "Jean de la Fontaine");
+// i.show().then((e) => console.log(e));
 module.exports = Database;
