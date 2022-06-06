@@ -32,7 +32,7 @@ class Database {
     });
   }
 
-  show() {
+  get show() {
     return new Promise((resolve, reject) => {
       this.database.query("SELECT * FROM books", (err, res, fields) => {
         if (err) reject(err);
