@@ -14,9 +14,7 @@ app.use((req, res, next) => {
 });
 
 DATABASE.connect;
-app.get("/", (req, res) => {
-  res.send(DATABASE.show);
-});
+app.get("/", (req, res) => {});
 
 app.get("/books", async (req, res) => {
   const books = await DATABASE.show.then((e) => e);

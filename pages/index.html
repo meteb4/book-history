@@ -10,7 +10,7 @@
     <h1>Registre de livres</h1>
     <h4>Disponibilité de livres dans notre réserve</h4>
     <div id="container">
-      <div id="header">
+      <div class="book">
         <span>Titre</span>
         <span>Auteur</span>
         <span>Date</span>
@@ -24,37 +24,81 @@
             return skim.json();
           })
           .then((parsed) => {
-            builder(parsed);
+            // console.log(parsed);
+            doBuild(parsed);
           });
       }
-      function builder(books) {
-        let container = document.createElement("div");
-        container.classList.add("book");
-        books.map((book) => {
-          let span = document.createElement("span");
-          for (let i = 0; i < Object.keys(book).length; i++) {
+
+      function doBuild(elements) {
+        elements.forEach((element) => {
+          let container = document.createElement("div");
+          container.classList.add("book");
+          for (let i = 0; i < Object.keys(elements).length; i++) {
+            let span = document.createElement("span");
             switch (i) {
               case 0:
-                span.innerHTML = document.createTextNode(book.title);
+                span.innerHTML = element.title;
                 container.appendChild(span);
                 break;
               case 1:
-                span.innerHTML = document.createTextNode(book.author);
+                span.innerHTML = element.author;
                 container.appendChild(span);
                 break;
               case 2:
-                span.innerHTML = document.createTextNode(book.id);
+                span.innerHTML = element.id;
                 container.appendChild(span);
                 break;
+              case 3:
+                console.log(element.available);
+                if (element.available == 1) {
+                  span.innerHTML = true;
+                } else {
+                  span.innerHTML = false;
+                }
+                container.appendChild(span);
               default:
                 break;
             }
           }
+          document.getElementById("container").appendChild(container);
         });
       }
       window.addEventListener("load", (e) => {
         getBooks();
       });
     </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+        color: #393d3f;
+      }
+
+      body {
+        background-color: #d5bbb1;
+      }
+
+      span {
+        width: 25vw;
+        height: 32px;
+      }
+
+      #container {
+        display: flex;
+        flex-direction: column;
+        border: 8px solid #9cc4b2;
+        border-radius: 10px;
+      }
+
+      .book {
+        display: flex;
+      }
+      .book span {
+        width: 25vw;
+        height: 32px;
+      }
+    </style>
   </body>
 </html>

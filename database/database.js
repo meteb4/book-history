@@ -17,9 +17,9 @@ class Database {
     this.database.end(() => console.log("DATABASE DISCONNECTED"));
   }
 
-  add(title, author) {
+  add(title, author, available) {
     this.database.query(
-      `INSERT INTO books (title, author) VALUES ("${title}","${author}")`,
+      `INSERT INTO books (title, author, available) VALUES ("${title}","${author}", "${available}")`,
       (err, res) => {
         if (err) throw err;
       }
