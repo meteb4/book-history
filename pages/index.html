@@ -41,33 +41,25 @@
       // get new book (form)
       const trigger = () =>
         document.getElementById("btn-s").addEventListener("click", (e) => {
-          const availableUnskim = () => {
-            if (document.getElementById("available").value == "on") {
+          function isAvailable(element) {
+            if (element.checked == true) {
               return true;
             } else {
               return false;
             }
-          };
-          let newBook = {
-            title: document.getElementById("title").value,
-            author: document.getElementById("author").value,
-            available: document.getElementById("available").value,
-          };
-          console.log(newBook);
-          var myInit = {
-            method: "POST",
+          }
+          fetch("http://localhost:3000/books/add", {
             headers: {
-              // "Content-Type": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded",
+              "Content-Type": "application/json",
             },
+            method: "post",
             mode: "cors",
             body: JSON.stringify({
               title: document.getElementById("title").value,
               author: document.getElementById("author").value,
-              available: document.getElementById("available").value,
+              available: isAvailable(document.getElementById("available")),
             }),
-          };
-          fetch("http://localhost:3000/books/add", myInit).then((res) => {
+          }).then((res) => {
             console.log(res);
           });
         });

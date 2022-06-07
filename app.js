@@ -6,11 +6,8 @@ const DATABASE = new Database("localhost", "root", "", "book");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Access-Headers", "Content-Type");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE"
-  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
   next();
 });
 
@@ -22,12 +19,12 @@ app.get("/books", async (req, res) => {
   res.send(books);
 });
 
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/books/add", (req, res) => {
-  console.log(JSON.parse(req.body));
-  DATABASE.add(req.body.title, req.body.author, req.body.available);
+  console.log(req.body);
+  // DATABASE.add(req.body.title, req.body.author, req.body.available);
 });
 
 app.listen(3000);
