@@ -18,8 +18,14 @@ class Database {
   }
 
   add(title, author, available) {
+    function treatAvailable(element) {
+      if (element) return "1";
+      ("0");
+    }
     this.database.query(
-      `INSERT INTO books (title, author, available) VALUES ("${title}","${author}", "${available}")`,
+      `INSERT INTO books (title, author, available) VALUES ("${title}","${author}", "${treatAvailable(
+        available
+      )}")`,
       (err, res) => {
         if (err) throw err;
       }

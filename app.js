@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.post("/books/add", (req, res) => {
   console.log(req.body);
-  // DATABASE.add(req.body.title, req.body.author, req.body.available);
+  DATABASE.add(req.body.title, req.body.author, req.body.available);
 });
 
 app.listen(3000);
