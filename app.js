@@ -23,7 +23,6 @@ app.get("/books", async (req, res) => {
 app.use(express.json());
 
 app.post("/books/add", (req, res) => {
-  console.log(req.body);
   DATABASE.add(req.body.title, req.body.author, req.body.available);
 });
 

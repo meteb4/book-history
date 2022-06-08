@@ -20,7 +20,9 @@ class Database {
   add(title, author, available) {
     function treatAvailable(element) {
       if (element) return "1";
-      ("0");
+      else {
+        return "0";
+      }
     }
     this.database.query(
       `INSERT INTO books (title, author, available) VALUES ("${title}","${author}", "${treatAvailable(
@@ -41,6 +43,10 @@ class Database {
   get show() {
     return new Promise((resolve, reject) => {
       this.database.query("SELECT * FROM books", (err, res, fields) => {
+        if (!res) {
+          console.log("no access to database");
+          return "impossible";
+        }
         if (err) reject(err);
         let arr = [];
         for (let i = 0; i < Object.keys(res).length; i++) {

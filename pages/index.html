@@ -9,23 +9,32 @@
   <body>
     <h1>Registre de livres</h1>
     <h4>Disponibilité de livres dans notre réserve</h4>
-    <div id="container">
-      <div class="book">
-        <span>Titre</span>
-        <span>Auteur</span>
-        <span>Date</span>
-        <span>Disponibilité</span>
-      </div>
-      <form action="http://localhost:3000/books/add" method="post">
-        <label for="title">Titre:</label>
-        <input type="text" name="title" id="title" placeholder="Titre" />
-        <label for="author">Auteur:</label>
-        <input type="text" name="author" id="author" placeholder="Auteur" />
-        <label for="available">Disponible:</label>
-        <input type="checkbox" name="available" id="available" />
-        <input type="button" id="btn-s" value="Submit" />
-      </form>
-    </div>
+
+    <form>
+      <label for="title"
+        >Titre: <input type="text" name="title" id="title" placeholder="Titre"
+      /></label>
+      <label for="author"
+        >Auteur:
+        <input type="text" name="author" id="author" placeholder="Auteur"
+      /></label>
+      <label for="available"
+        >Disponible: <input type="checkbox" name="available" id="available"
+      /></label>
+      <input type="button" id="btn-s" value="Submit" />
+    </form>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Auteur</th>
+          <th>Disponible</th>
+        </tr>
+      </thead>
+
+      <tbody id="tbody"></tbody>
+    </table>
     <script>
       function getBooks() {
         fetch("http://localhost:3000/books")
@@ -33,13 +42,26 @@
             return skim.json();
           })
           .then((parsed) => {
-            doBuild(parsed);
+            // doBuild(parsed);
+            test(parsed);
+          })
+          .catch((e) => {
+            if (e)
+              document.getElementById("container").innerHTML +=
+                "COULDNT CONNECT TO DATABASE";
           });
       }
 
       // get new book (form)
-      const trigger = () =>
+      const trigger = () => {
         document.getElementById("btn-s").addEventListener("click", (e) => {
+          if (
+            document.getElementById("title").value == "" ||
+            document.getElementById("title").value == ""
+          ) {
+            window.alert("MISSING CREDENTIALS AT FORM");
+            return 0;
+          }
           function isAvailable(element) {
             if (element.checked == true) {
               return true;
@@ -58,10 +80,13 @@
               author: document.getElementById("author").value,
               available: isAvailable(document.getElementById("available")),
             }),
-          }).then((res) => {
-            console.log(res);
           });
+          document.getElementById("tbody").innerHTML = null;
+          getBooks();
+          document.getElementById("title").value = "";
+          document.getElementById("author").value = "";
         });
+      };
       trigger();
 
       function doBuild(elements) {
@@ -97,6 +122,44 @@
           document.getElementById("container").appendChild(container);
         });
       }
+
+      function test(list) {
+        const box = document.getElementById("tbody");
+        list.map((element) => {
+          const wrap = document.createElement("tr");
+          for (let i = 0; i < Object.keys(element).length; i++) {
+            let child = document.createElement("td");
+            switch (i) {
+              case 0:
+                child.innerHTML = element.id;
+                wrap.appendChild(child);
+                break;
+              case 1:
+                child.innerHTML = element.title;
+                wrap.appendChild(child);
+                break;
+              case 2:
+                child.innerHTML = element.author;
+                wrap.appendChild(child);
+                break;
+              case 3:
+                let checker = document.createElement("div");
+                checker.setAttribute("id", "avai");
+                if (element.available == "1") {
+                  checker.classList.add("isAvai");
+                } else {
+                  checker.classList.add("isNotAvai");
+                }
+                wrap.appendChild(checker);
+                break;
+              default:
+                break;
+            }
+          }
+          box.appendChild(wrap);
+        });
+      }
+
       window.addEventListener("load", (e) => {
         getBooks();
       });
@@ -107,36 +170,77 @@
         padding: 0;
         list-style: none;
         text-decoration: none;
-        color: #393d3f;
       }
 
       body {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
         background-color: #d5bbb1;
       }
 
-      span {
-        width: 25vw;
-        height: 32px;
+      #avai {
+        border-radius: 200px;
+        width: 24px;
+        height: 24px;
+        position: relative;
+        border: #ffffff 3px solid;
       }
 
-      #container {
+      .isAvai {
+        background-color: rgb(94, 210, 94);
+      }
+
+      .isNotAvai {
+        background-color: rgb(215, 92, 70);
+      }
+
+      #avai::after {
+        left: 50%;
+        top: 50%;
+        border-radius: 200px;
+        background-color: #ffffff;
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        content: "";
+        transform: translate(-50%, -50%);
+      }
+
+      thead tr {
+        color: #ffffff;
+        background-color: #ee6b6b;
+      }
+
+      thead th {
+        font-size: 1.2em;
+        padding: 10px 22px;
+      }
+
+      tbody tr {
+        color: #474747;
+        background-color: #ffffff;
+      }
+
+      tbody td {
+        padding: 4px 36px;
+      }
+
+      form {
         display: flex;
         flex-direction: column;
-        border: 8px solid #9cc4b2;
-        border-radius: 10px;
+        width: 250px;
+        justify-content: space-between;
+        margin: 10px;
+        padding: 8px;
+        border: 2px #474747 solid;
       }
 
-      .book {
-        display: flex;
-      }
-      .book span {
-        width: 25vw;
-        height: 32px;
+      form label {
+        margin: 20px 0;
       }
 
-      input {
-        width: 20vw;
-        height: 32px;
+      form input {
+        box-sizing: border-box;
+        width: 100%;
       }
     </style>
   </body>
