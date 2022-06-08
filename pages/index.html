@@ -29,7 +29,7 @@
           <th>ID</th>
           <th>Titre</th>
           <th>Auteur</th>
-          <th>Disponible</th>
+          <th id="th-a">Disponible</th>
         </tr>
       </thead>
 
@@ -160,6 +160,35 @@
         });
       }
 
+      function filter(liste) {
+        let isAvailable = [];
+        let isNotAvailable = [];
+        liste.map((el) => {
+          if (el.available == "1") {
+            isAvailable.push(el);
+          } else {
+            isNotAvailable.push(el);
+          }
+        });
+        res = [];
+        isAvailable.map((el) => {
+          res.push(el);
+        });
+        isNotAvailable.map((el) => {
+          res.push(el);
+        });
+        return res;
+      }
+      document.getElementById("th-a").addEventListener("click", (e) => {
+        fetch("http://localhost:3000/books")
+          .then((skim) => {
+            return skim.json();
+          })
+          .then((parsed) => {
+            document.getElementById("tbody").innerHTML = null;
+            test(filter(parsed));
+          });
+      });
       window.addEventListener("load", (e) => {
         getBooks();
       });
